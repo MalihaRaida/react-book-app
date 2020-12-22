@@ -1,8 +1,9 @@
 import React from "react";
-import { BrowserRouter, Link, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../BookCard.css";
 
 const BookCard = (props) => {
+  const BookDetailsUrl='/'+props.data.id
   const details = props.data.volumeInfo;
   let imageUrl = "https://picsum.photos/id/1040/200/300";
   if (
@@ -24,9 +25,9 @@ const BookCard = (props) => {
   return (
     <div className="column">
       <div className="ui fluid card book-card">
-        <div className="image">
+        <Link to={BookDetailsUrl} className="image">
           <img src={imageUrl} />
-        </div>
+        </Link>
         <div className="content">
           <h3>{details.title}</h3>
           <div className="description">
@@ -49,6 +50,7 @@ const BookCard = (props) => {
         <div className="book-menu">
           <h3>Overview:</h3>
           <p>{description}</p>
+          <Link to={BookDetailsUrl} >see more </Link>
         </div>
       </div>
     </div>
