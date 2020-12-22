@@ -20,4 +20,15 @@ const getBooksByTitle = (searchTitle, setBooks, startIndex, setTotalPage) => {
     .catch((error) => console.log(error));
 };
 
-export {getBooksByTitle} ;
+
+const getSingleBookById=(BookId,setBook)=>{
+  const BookDetailsUrl = "/volumes/"+BookId;
+  googleBooks
+    .get(BookDetailsUrl)
+    .then((response) => {
+      setBook(response.data)
+    })
+    .catch((error) => console.log(error));
+}
+
+export { getBooksByTitle, getSingleBookById };
