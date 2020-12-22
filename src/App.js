@@ -4,8 +4,10 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import { getBooksByTitle } from "./api/googleBook";
 import Pagination from "./components/Pagination";
+import { BrowserRouter, Route } from "react-router-dom";
+import BookDetails from "./BookDetails";
 
-const App = () => {
+const BookFinder = () => {
   const [SearchTitle, setSearchTitle] = useState("");
   const [Books, setBooks] = useState([]);
   const [totalpage, setTotalPage] = useState(0);
@@ -27,8 +29,8 @@ const App = () => {
   };
 
   return (
-    <div>
-      <Header />
+    <div className="search-result">
+      <Header title="BookFinder" />
       <SearchBar handleSubmit={handleSubmit} handleChange={handleChange} />
       <div className="ui four column grid" style={{ padding: "50px" }}>
         {Array.isArray(Books)
@@ -49,5 +51,14 @@ const App = () => {
     </div>
   );
 };
+
+const App=()=>{
+  return (
+    <BrowserRouter>
+      <Route path="/" exact={true} component={BookFinder} />
+      <Route path="/:id" component={BookDetails}/>
+    </BrowserRouter>
+  );
+}
 
 export default App;
