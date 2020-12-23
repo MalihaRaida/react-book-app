@@ -4,15 +4,19 @@ const Pagination = (props) => {
   const pages = [];
   if (props.currentPage == 1) {
     pages.push(
-      <a className="disabled item">
+      <a key={0} className="disabled item">
         <i className="chevron left icon"></i>
       </a>
     );
   } else {
     pages.push(
-      <a className="item" onClick={()=>{
-        props.newpageBook(props.currentPage-1);
-      }}>
+      <a
+        key={0}
+        className="item"
+        onClick={() => {
+          props.newpageBook(props.currentPage - 1);
+        }}
+      >
         <i className="chevron left icon"></i>
       </a>
     );
@@ -25,6 +29,7 @@ const Pagination = (props) => {
     let className=active+" item"
     pages.push(
       <a
+      key={index}
         className={className}
         onClick={() => {
           props.newpageBook(index);
@@ -37,16 +42,17 @@ const Pagination = (props) => {
   }
   if (props.currentPage == props.totalpage) {
     pages.push(
-      <a className="disabled item">
+      <a key={props.totalpage+1} className="disabled item">
         <i className="chevron right icon"></i>
       </a>
     );
   } else {
     pages.push(
       <a
+        key={props.totalpage+1}
         className="item"
         onClick={() => {
-          props.newpageBook(props.currentPage +1);
+          props.newpageBook(props.currentPage + 1);
         }}
       >
         <i className="chevron right icon"></i>
