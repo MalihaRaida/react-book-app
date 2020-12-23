@@ -24,7 +24,7 @@ const BookFinder = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await getBooksByTitle(SearchTitle, setBooks, currentPage, setTotalPage);
+    await getBooksByTitle(SearchTitle, setBooks, currentPage-1, setTotalPage);
   };
 
   return (
