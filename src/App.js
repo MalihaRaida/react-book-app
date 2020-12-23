@@ -6,8 +6,8 @@ import BookFinder from "./BookFinder";
 const App=()=>{
   return (
     <BrowserRouter>
-      <Route path="/" exact={true} component={BookFinder} />
-      <Route path="/:id" component={BookDetails}/>
+      <Route path="/:query?" exact={true} component={BookFinder} />
+      <Route path="/book/:id" component={BookDetails}/>
     </BrowserRouter>
   );
 }
