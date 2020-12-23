@@ -9,6 +9,7 @@ const SearchBar=(props)=>{
             style={{ width: "40%", height: "50px" }}
           >
             <input
+            value={props.default}
               className="prompt"
               type="text"
               placeholder="Search Books..."
