@@ -4,13 +4,20 @@ const googleBooks = axios.create({
   baseURL: "https://www.googleapis.com/books/v1",
 });
 
-const getBooksByTitle = (searchTitle, setBooks, startIndex, setTotalPage) => {
+const getBooksByTitle = (
+  searchTitle,
+  setBooks,
+  startIndex,
+  setTotalPage,
+  orderBy
+) => {
   googleBooks
     .get("/volumes/", {
       params: {
         q: searchTitle,
         startIndex: startIndex,
         maxResults: 20,
+        orderBy: orderBy,
       },
     })
     .then((response) => {

@@ -11,28 +11,40 @@ const BookFinder = ({ match, history }) => {
   );
   const [Books, setBooks] = useState([]);
   const [totalpage, setTotalPage] = useState(0);
-  const [currentPage, setcurrentPage] = useState(1);
+  const [currentPage, setcurrentPage] = useState(
+    history.location.state == undefined ? 1 : history.location.state.page
+  );
 
-  const setQuery = async () => {
-    if (history.location.state != undefined) {
-       await newpageBook(history.location.state);
+  const [orderBy, setorderBy] = useState(
+    history.location.state == undefined
+      ? "relevance"
+      : history.location.state.orderBy
+  );
+
+  useEffect(async () => {
+    if (SearchTitle) {
+      await newpageBook(currentPage);
     }
-  };
-
-  useEffect(() => {
-    setQuery();
   }, []);
 
-
-  const handleChange = (event) => {
+  const handleChangeInput = (event) => {
     setSearchTitle(event.target.value);
+  };
+  const handleChangeDropdown = (event) => {
+    setorderBy(event.target.value);
   };
 
   const newpageBook = async (page) => {
     let startIndex = 20 * (page - 1);
     setcurrentPage(page);
-    history.push("/" + SearchTitle, page);
-    await getBooksByTitle(SearchTitle, setBooks, startIndex, setTotalPage);
+    history.push("/" + SearchTitle, { page: page, orderBy: orderBy });
+    await getBooksByTitle(
+      SearchTitle,
+      setBooks,
+      startIndex,
+      setTotalPage,
+      orderBy
+    );
   };
 
   const handleSubmit = async (event) => {
@@ -44,9 +56,11 @@ const BookFinder = ({ match, history }) => {
     <div className="search-result">
       <Header title="BookFinder" />
       <SearchBar
-        default={SearchTitle}
+        defaultTitle={SearchTitle}
+        defaultorder={orderBy}
         handleSubmit={handleSubmit}
-        handleChange={handleChange}
+        handleChangeInput={handleChangeInput}
+        handleChangeDropdown={handleChangeDropdown}
       />
       <div className="ui four column grid" style={{ padding: "50px" }}>
         {Array.isArray(Books)
