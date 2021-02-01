@@ -37,4 +37,20 @@ const getSingleBookById = (BookId, setBook) => {
     .catch((error) => console.log(error));
 };
 
-export { getBooksByTitle, getSingleBookById };
+const getFavoriteBooks = (FavList, setFavBooks) => {
+  let FavBook = [];
+  FavList.map((book) => {
+    const BookDetailsUrl = "/volumes/" + book;
+    googleBooks
+      .get(BookDetailsUrl)
+      .then((response) => {
+        FavBook.push(response.data.volumeInfo);
+      })
+      .catch((error) => console.log(error));
+  });
+  setFavBooks(FavBook);
+  console.log(FavBook.length);
+};
+
+
+export { getBooksByTitle, getSingleBookById, getFavoriteBooks };

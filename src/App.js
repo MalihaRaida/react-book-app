@@ -8,7 +8,8 @@ const App=()=>{
   return (
     <BrowserRouter history={history}>
       <Route path="/:query?" exact={true} component={BookFinder} />
-      <Route path="/book/:id" component={BookDetails}/>
+      <Route path="/book/:id" component={BookDetails} />
+      {/* <Route path="/book/fav" component={BookDetails} /> */}
     </BrowserRouter>
   );
 }

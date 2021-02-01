@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const SearchBar = (props) => {
   return (
@@ -22,6 +23,7 @@ const SearchBar = (props) => {
         >
           <option value="relevance">Relevance</option>
           <option value="newest">Newest</option>
+          <option value="favorite">My favorite</option>
         </select>
         <button
           className="ui blue button"

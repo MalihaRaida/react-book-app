@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../BookCard.css";
 
 const BookCard = (props) => {
+  const { data, saveFav } = props;
   const BookDetailsUrl='/book/'+props.data.id
   const details = props.data.volumeInfo;
   let imageUrl = "https://picsum.photos/id/1040/200/300";
@@ -50,7 +51,10 @@ const BookCard = (props) => {
         <div className="book-menu">
           <h3>Overview:</h3>
           <p>{description}</p>
-          <Link to={BookDetailsUrl} >see more </Link>
+          <Link to={BookDetailsUrl}>see more </Link>
+          <button onClick={() => saveFav(data)} value={props.data.id}>
+            Favorite
+          </button>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BookCard from "./components/BookCard";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
-import { getBooksByTitle } from "./api/googleBook";
+import { getBooksByTitle, getFavoriteBooks } from "./api/googleBook";
 import Pagination from "./components/Pagination";
 
 const BookFinder = ({ match, history }) => {
@@ -14,7 +14,7 @@ const BookFinder = ({ match, history }) => {
   const [currentPage, setcurrentPage] = useState(
     history.location.state == undefined ? 1 : history.location.state.page
   );
-
+  const [favBooks,setFavBooks]=useState([])
   const [orderBy, setorderBy] = useState(
     history.location.state == undefined
       ? "relevance"
@@ -30,21 +30,42 @@ const BookFinder = ({ match, history }) => {
   const handleChangeInput = (event) => {
     setSearchTitle(event.target.value);
   };
+
+  const saveFav=(favBook=null)=>{
+    if(favBook) {
+      const {id} = favBook;
+      const alreadyExists = favBooks.find(favBook => favBook.id === id);
+
+      if(alreadyExists) {
+        const updatedBookData = favBooks.filter(favBook => favBook.id !== id);
+        setFavBooks(updatedBookData)
+      } else {
+        setFavBooks((prevData) => [favBook, ...favBooks])
+      }
+    }
+  }
+  
   const handleChangeDropdown = (event) => {
-    setorderBy(event.target.value);
+    if (event.target.value !== "favorite") setorderBy(event.target.value);
+    else
+    {
+     setorderBy(event.target.value);
+     setBooks(favBooks)
+    }
   };
 
   const newpageBook = async (page) => {
     let startIndex = 20 * (page - 1);
     setcurrentPage(page);
     history.push("/" + SearchTitle, { page: page, orderBy: orderBy });
-    await getBooksByTitle(
-      SearchTitle,
-      setBooks,
-      startIndex,
-      setTotalPage,
-      orderBy
-    );
+    if (orderBy !== "favorite")
+      await getBooksByTitle(
+        SearchTitle,
+        setBooks,
+        startIndex,
+        setTotalPage,
+        orderBy
+      );
   };
 
   const handleSubmit = async (event) => {
@@ -62,22 +83,33 @@ const BookFinder = ({ match, history }) => {
         handleChangeInput={handleChangeInput}
         handleChangeDropdown={handleChangeDropdown}
       />
-      <div className="ui four column grid" style={{ padding: "50px" }}>
-        {Array.isArray(Books)
-          ? Books.map((book, i) => {
-              return <BookCard data={book} key={i} />;
-            })
-          : " "}
+      <div>
+        <div className="ui four column grid" style={{ padding: "50px" }}>
+          {Array.isArray(Books)
+            ? Books.map((book, i) => {
+                return <BookCard data={book} saveFav={saveFav} key={i} />;
+              })
+            : " "}
+        </div>
+        {totalpage > 1 ? (
+          <Pagination
+            newpageBook={newpageBook}
+            currentPage={currentPage}
+            totalpage={totalpage}
+          />
+        ) : (
+          ""
+        )}
       </div>
-      {totalpage > 1 ? (
-        <Pagination
-          newpageBook={newpageBook}
-          currentPage={currentPage}
-          totalpage={totalpage}
-        />
-      ) : (
-        ""
-      )}
+      {/* <div>
+        <div className="ui four column grid" style={{ padding: "50px" }}>
+          {Array.isArray(FavBooks)
+            ? FavBooks.map((book, i) => {
+                return <BookCard data={book} saveFav={saveFav} key={i} />;
+              })
+            : " "}
+        </div>
+      </div> */}
     </div>
   );
 };
